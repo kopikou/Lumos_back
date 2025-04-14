@@ -30,6 +30,10 @@ class ShowRatesViewset(mixins.CreateModelMixin,
     GenericViewSet):
     queryset = ShowRate.objects.all()
     serializer_class = ShowRateSerializer
+    def get_serializer_class(self):
+        if self.action in ('create', 'update'):
+            return ShowRateCreateUpdateSerializer
+        return super().get_serializer_class()
 
 class PerformancesViewset(mixins.CreateModelMixin,
     mixins.UpdateModelMixin, 
@@ -39,6 +43,10 @@ class PerformancesViewset(mixins.CreateModelMixin,
     GenericViewSet):
     queryset = Performance.objects.all()
     serializer_class = PerformanceSerializer
+    def get_serializer_class(self):
+        if self.action in ('create', 'update'):
+            return PerformanceCreateUpdateSerializer
+        return super().get_serializer_class()
 
 class ArtistPerformancesViewset(mixins.CreateModelMixin,
     mixins.UpdateModelMixin, 
@@ -48,6 +56,10 @@ class ArtistPerformancesViewset(mixins.CreateModelMixin,
     GenericViewSet):
     queryset = ArtistPerformance.objects.all()
     serializer_class = ArtistPerformanceSerializer
+    def get_serializer_class(self):
+        if self.action in ('create', 'update'):
+            return ArtistPerformanceCreateUpdateSerializer
+        return super().get_serializer_class()
 
 class OrdersViewset(mixins.CreateModelMixin,
     mixins.UpdateModelMixin, 
@@ -57,6 +69,10 @@ class OrdersViewset(mixins.CreateModelMixin,
     GenericViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    def get_serializer_class(self):
+        if self.action in ('create', 'update'):
+            return OrderCreateUpdateSerializer
+        return super().get_serializer_class()
 
 class EarningsViewset(mixins.CreateModelMixin,
     mixins.UpdateModelMixin, 
@@ -66,3 +82,7 @@ class EarningsViewset(mixins.CreateModelMixin,
     GenericViewSet):
     queryset = Earning.objects.all()
     serializer_class = EarningSerializer
+    def get_serializer_class(self):
+        if self.action in ('create', 'update'):
+            return EarningCreateUpdateSerializer
+        return super().get_serializer_class()

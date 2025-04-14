@@ -12,15 +12,23 @@ class TypeSerializer(serializers.ModelSerializer):
         fields = ['id','show_type']
 
 class ShowRateSerializer(serializers.ModelSerializer):
-    show_type = TypeSerializer(read_only=True)
+    show_type = TypeSerializer()
 
+    class Meta:
+        model = ShowRate
+        fields = ['id','show_type','rate'] 
+class ShowRateCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShowRate
         fields = ['id','show_type','rate'] 
 
 class PerformanceSerializer(serializers.ModelSerializer):
-    type = TypeSerializer(read_only=True)
+    type = TypeSerializer()
 
+    class Meta:
+        model = Performance
+        fields = ['id','title','duration','cost','type','cnt_artists']   
+class PerformanceCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Performance
         fields = ['id','title','duration','cost','type','cnt_artists']   
@@ -33,10 +41,18 @@ class ArtistPerformanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArtistPerformance
         fields = ['artist','performance','rate']  
+class ArtistPerformanceCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArtistPerformance
+        fields = ['artist','performance','rate']  
 
 class OrderSerializer(serializers.ModelSerializer):
     performance = PerformanceSerializer(read_only=True)
 
+    class Meta:
+        model = Order
+        fields = ['id','date','location','performance','amount','comment','completed']  
+class OrderCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id','date','location','performance','amount','comment','completed']  
@@ -45,6 +61,10 @@ class EarningSerializer(serializers.ModelSerializer):
     order = OrderSerializer(read_only=True)
     artist = ArtistSerializer(read_only=True)
 
+    class Meta:
+        model = Earning
+        fields = ['order','artist','amount','paid'] 
+class EarningCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Earning
         fields = ['order','artist','amount','paid'] 
