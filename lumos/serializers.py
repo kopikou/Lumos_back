@@ -68,3 +68,41 @@ class EarningCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Earning
         fields = ['order','artist','amount','paid'] 
+
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth.models import Group
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        
+        # Получаем группы пользователя
+        is_admin = self.user.is_superuser  # или self.user.is_staff
+        
+        data['user'] = {
+            'id': self.user.id,
+            'username': self.user.username,
+            'is_admin': is_admin,
+            'first_name': self.user.first_name,
+            'last_name': self.user.last_name
+        }
+        return data
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+     
+from rest_framework import serializers
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    is_admin = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'is_admin', 'is_staff')
+    
+    def get_is_admin(self, obj):
+        return obj.is_superuser or obj.groups.filter(name='Admin').exists()
