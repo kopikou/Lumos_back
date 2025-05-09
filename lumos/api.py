@@ -1,5 +1,7 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from lumos.models import *
 from lumos.serializers import * 
@@ -12,6 +14,18 @@ class ArtistsViewset(mixins.CreateModelMixin,
     GenericViewSet):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
+
+    @action(detail=False, methods=['put'], url_path='update-user/(?P<user_id>\d+)')
+    def update_user(self, request, user_id=None):
+        try:
+            user = User.objects.get(id=user_id)
+            serializer = UserUpdateSerializer(user, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=400)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=404)
 
 class TypesViewset(mixins.CreateModelMixin,
     mixins.UpdateModelMixin, 

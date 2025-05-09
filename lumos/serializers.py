@@ -106,3 +106,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     def get_is_admin(self, obj):
         return obj.is_superuser or obj.groups.filter(name='Admin').exists()
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name')
