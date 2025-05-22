@@ -40,11 +40,11 @@ class ArtistPerformanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ArtistPerformance
-        fields = ['artist','performance','rate']  
+        fields = ['id','artist','performance','rate']  
 class ArtistPerformanceCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArtistPerformance
-        fields = ['artist','performance','rate']  
+        fields = ['id','artist','performance','rate']  
 
 class OrderSerializer(serializers.ModelSerializer):
     performance = PerformanceSerializer(read_only=True)
@@ -63,11 +63,11 @@ class EarningSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Earning
-        fields = ['order','artist','amount','paid'] 
+        fields = ['id','order','artist','amount','paid'] 
 class EarningCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Earning
-        fields = ['order','artist','amount','paid'] 
+        fields = ['id','order','artist','amount','paid'] 
 
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
